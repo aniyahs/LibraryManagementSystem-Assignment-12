@@ -1,27 +1,31 @@
 <project name="JavaProject" default="test" basedir=".">
     <property name="src.dir" value="src"/>
-    <property name="test.dir" value="src/test"/>
+    <property name="test.dir" value="test"/>
     <property name="build.dir" value="build"/>
-    <property name="lib.dir" value="lib"/> <!-- Directory for JUnit JAR -->
+    <property name="lib.dir" value="lib"/>
     <property name="report.dir" value="report"/>
+    <property name="test.classpath" value="${build.dir}/classes:${test.dir}/classes"/>
 
     <!-- JUnit library path -->
     <path id="test.classpath">
         <fileset dir="${lib.dir}">
             <include name="junit-4.13.2.jar"/>
             <include name="jacocoant.jar"/>
+            <include name="jacocoagent.jar"/>
         </fileset>
     </path>
 
     <!-- Target to initialize the build directory -->
     <target name="init">
         <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dir}/classes"/>
         <mkdir dir="${report.dir}"/>
     </target>
 
     <!-- Target to compile the Java files -->
     <target name="compile" depends="init">
-        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="test.classpath"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}/classes" classpathref="test.classpath"/>
+        <javac srcdir="${test.dir}" destdir="${build.dir}/classes" classpathref="test.classpath"/>
     </target>
 
     <!-- Target to clean up the build directory -->
@@ -35,17 +39,25 @@
         <junit fork="true">
             <classpath>
                 <path refid="test.classpath"/>
-                <pathelement location="${build.dir}"/>
+                <pathelement location="${build.dir}/classes"/>
             </classpath>
-            <test name="bookTest"/> <!-- Replace with your test class name -->
+            <test name="test.model.BookTest"/>
+            <test name="test.model.InventoryTest"/>
+            <test name="test.model.LoanTest"/>
+            <test name="test.model.PatronTest"/>
+            <test name="test.model.PatronTypeTest"/>
+            <test name="test.model.ReservationTest"/>
         </junit>
     </target>
+
+    <!-- Generate test reports -->
     <target name="report" depends="test">
         <junitreport todir="${report.dir}">
             <fileset dir="${build.dir}">
                 <include name="**/TEST-*.xml"/>
             </fileset>
+            <report format="frames"/>
         </junitreport>
     </target>
-    
+
 </project>

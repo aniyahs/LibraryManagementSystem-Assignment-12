@@ -139,8 +139,11 @@ public class Book {
     private void syncAvailableCopies() {
         if (availableCopies > totalCopies) {
             availableCopies = totalCopies;
+        } else if (availableCopies < totalCopies) {
+            availableCopies = totalCopies;
         }
     }
+    
 
     @Override
     public boolean equals(Object o) {
