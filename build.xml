@@ -1,0 +1,51 @@
+<project name="JavaProject" default="test" basedir=".">
+    <property name="src.dir" value="src"/>
+    <property name="test.dir" value="src/test"/>
+    <property name="build.dir" value="build"/>
+    <property name="lib.dir" value="lib"/> <!-- Directory for JUnit JAR -->
+    <property name="report.dir" value="report"/>
+
+    <!-- JUnit library path -->
+    <path id="test.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="junit-4.13.2.jar"/>
+            <include name="jacocoant.jar"/>
+        </fileset>
+    </path>
+
+    <!-- Target to initialize the build directory -->
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${report.dir}"/>
+    </target>
+
+    <!-- Target to compile the Java files -->
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="test.classpath"/>
+    </target>
+
+    <!-- Target to clean up the build directory -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${report.dir}"/>
+    </target>
+
+    <!-- Target to compile and run the tests -->
+    <target name="test" depends="compile">
+        <junit fork="true">
+            <classpath>
+                <path refid="test.classpath"/>
+                <pathelement location="${build.dir}"/>
+            </classpath>
+            <test name="bookTest"/> <!-- Replace with your test class name -->
+        </junit>
+    </target>
+    <target name="report" depends="test">
+        <junitreport todir="${report.dir}">
+            <fileset dir="${build.dir}">
+                <include name="**/TEST-*.xml"/>
+            </fileset>
+        </junitreport>
+    </target>
+    
+</project>

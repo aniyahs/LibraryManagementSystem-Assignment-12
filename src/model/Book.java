@@ -167,4 +167,9 @@ public class Book {
                 ", availableCopies=" + availableCopies +
                 '}';
     }
+
+    public void setAvailable(boolean isAvailable) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setAvailable'");
+    }
 }

@@ -125,6 +125,15 @@ public class Loan {
         return overdueDays * dailyLateFee;
     }
 
+    /**
+     * Generates a unique loan ID based on the book's ISBN, patron's ID, and loan date.
+     *
+     * @return A string representing the unique Loan ID.
+     */
+    public String getLoanId() {
+        return book.getIsbn() + "-" + patron.getPatronId() + "-" + loanDate.toString();
+    }
+
     // Utility methods for validation
 
     /**
